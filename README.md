@@ -3,7 +3,6 @@
 
 ### Setup
 - vagrant up --provider=docker
-- vagrant ssh
 - docker ps
 - docker exec -i -t CONTAINER_ID bash
 

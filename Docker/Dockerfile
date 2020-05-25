@@ -1,6 +1,6 @@
 # Ubuntu
 
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 MAINTAINER Nguyen Phu Quang, nguyenphuquang90@gmail.com
 
@@ -10,7 +10,7 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:nginx/stable
 #RUN apt-get update
 #RUN apt-get -y dist-upgrade
-RUN apt-get install -y php5-fpm nginx supervisor
+RUN apt-get install -y supervisor nginx php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip
 
 # Mysql
 RUN echo "mysql-server mysql-server/root_password password docker" | debconf-set-selections
@@ -20,10 +20,10 @@ RUN apt-get -y --force-yes install mysql-server
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
 # Setup config files
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN echo "daemon off;" >> /etc/nginx/conf.d/nginx.conf
 ADD ./nginx/default /etc/nginx/sites-enabled/default
 ADD ./supervisor/supervisord.conf /etc/supervisor/supervisord.conf
-ADD ./php-fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf
+ADD ./php-fpm/php-fpm.conf /etc/php/7.0/fpm/pool.d/php-fpm.conf
 ADD ./mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 ADD ./mysql/supervised_mysql /usr/sbin/supervised_mysql
 
