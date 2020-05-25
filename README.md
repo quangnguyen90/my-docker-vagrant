@@ -9,7 +9,7 @@
 ### Database
 - user: root
 - pass: docker
-- host: 127.0.0.1
+- host: localhost
 
 ### Check website
-- localhost:8080/index.php
+- localhost:8081/index.php

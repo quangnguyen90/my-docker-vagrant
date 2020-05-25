@@ -20,12 +20,43 @@ RUN apt-get -y --force-yes install mysql-server
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
 # Setup config files
-RUN echo "daemon off;" >> /etc/nginx/conf.d/nginx.conf
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 ADD ./nginx/default /etc/nginx/sites-enabled/default
 ADD ./supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 ADD ./php-fpm/php-fpm.conf /etc/php/7.0/fpm/pool.d/php-fpm.conf
 ADD ./mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 ADD ./mysql/supervised_mysql /usr/sbin/supervised_mysql
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    autoconf \
+	dpkg-dev \
+    build-essential \
+    libpng-dev \
+    libfreetype6-dev \
+    libicu-dev \
+    libxslt1-dev \ 
+    sendmail-bin \ 
+    sendmail \ 
+    sudo \
+    libonig-dev \
+    libzip-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libmcrypt-dev \
+    mysql-client libmagickwand-dev --no-install-recommends
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Shared volume
 RUN mkdir -p /var/www
@@ -35,9 +66,8 @@ VOLUME ["/var/www"]
 CMD ["supervisord", "--nodaemon"]
 USER root
 
-# Expose port 80 of the container
-EXPOSE 80
+# Expose port 8001 of the container
+EXPOSE 8001
 
 # Extra setup
-#RUN apt-get install nano
-#RUM echo "export TERM=xterm" >>  /root/.bashrc
+RUN echo "export TERM=xterm" >>  /root/.bashrc
