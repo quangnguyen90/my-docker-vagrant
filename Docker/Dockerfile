@@ -1,8 +1,8 @@
 # Ubuntu
 
-FROM ubuntu:15.04
+FROM ubuntu:18.04
 
-MAINTAINER Renato Medina, medina@mdnsolutions.com
+MAINTAINER Nguyen Phu Quang, nguyenphuquang90@gmail.com
 
 # Download and install php, nginx, and supervisor
 RUN apt-get update

@@ -7,5 +7,10 @@
 - docker ps
 - docker exec -i -t CONTAINER_ID bash
 
+### Database
+- user: root
+- pass: docker
+- host: 127.0.0.1
+
 ### Check website
 - localhost:8080/index.php
